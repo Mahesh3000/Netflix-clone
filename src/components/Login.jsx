@@ -1,13 +1,70 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "../common/Header";
+import { validate } from "../utils/validate";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
+import { useNavigate} from 'react-router-dom';
+import {useDispatch } from 'react-redux';
+import { addUser } from "../utils/userSlice";
+import { NETFLIX_BODY_URL } from "../utils/constants";
 
 const Login = () => {
 
-    const [toggleSignIn,setToggleSignIn] = useState(true);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
+    const [toggleSignIn,setToggleSignIn] = useState(true);
+    const [errorMsg,setErroMsg] = useState(false);
 
     const toggleSignUp = () =>{
         setToggleSignIn(!toggleSignIn);
+    }
+
+    const email = useRef();
+    const password = useRef();
+    
+    
+
+    const onSignInHandler = (e) =>{
+        e.preventDefault();
+
+        let validationStatus = validate(email.current.value,password.current.value);
+        setErroMsg(validationStatus);
+
+        if(errorMsg) return;
+
+        if(!toggleSignIn)
+        createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+        .then((userCredential) => {
+            // Signed up 
+            // const user = userCredential.user;
+            // dispatch(addUser(userCredential.user))
+            // ...
+            dispatch(addUser({email:userCredential.user.email,uid:userCredential.user.uid,displayName:userCredential.user.displayName}))
+            console.log("LoggedIn ",userCredential);
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // ..
+        });
+
+        else{
+            signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+            .then((userCredential) => {
+                // Signed in 
+                // const user = userCredential.user;
+                console.log("Success");
+                dispatch(addUser({email:userCredential.user.email,uid:userCredential.user.uid,displayName:userCredential.user.displayName}))
+                
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+            });
+
+        }
     }
 
   return (
@@ -15,13 +72,13 @@ const Login = () => {
       <Header />
       <div className="absolute ">
         <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/b8dd5151-d491-4e91-b1fb-a19df70df5fc/d46403c9-f9cb-4151-b179-70cec1ccdba6/US-en-20240102-trifectadaily-perspective_alpha_website_large.jpg"
-          alt=""
+          src={NETFLIX_BODY_URL}
+          alt="NETFLIX BACKGROUND"
         />
       </div>
       <form
         action=""
-        className="bg-[black]  w-3/12  absolute  right-0 left-0 mx-auto pb-16 pl-16 pr-16 pt-12   my-36 flex flex-col justify-center content-center bg-opacity-80"
+        className="bg-[black]  w-4/12  absolute  right-0 left-0 mx-auto pb-16 pl-16 pr-16 pt-12   my-36 flex flex-col justify-center content-center bg-opacity-80"
       >
         <h2 className="text-3xl text-[white] font-semibold just py-4">
         {toggleSignIn ? "Sign In" : "Sign Up"}
@@ -30,20 +87,23 @@ const Login = () => {
         <input
           type="text"
           placeholder="Full Name"
-          className="p-4 mx-auto my-4  w-full rounded bg-[#585858]"
+          className="p-4 mx-auto my-4  w-full rounded bg-[#585858] text-white text-xl  font-semibold"
         /> : ""}
         <input
           type="email"
           placeholder="Email or Phone Number"
-          className="p-4 mx-auto my-4  w-full rounded bg-[#585858]"
+          ref={email}
+          className="p-4 mx-auto my-4  w-full rounded bg-[#585858] border-none text-xl text-white  font-semibold"
         />
         <input
           type="password"
           placeholder="Password"
-          className="p-4 mx-auto my-4 w-full rounded bg-[#585858]"
+          ref={password}
+          className="p-4 mx-auto my-4 w-full rounded bg-[#585858] border-none text-xl text-white"
         />
         {/* <input type="password"  placeholder='Confirm Password' className='p-2 m-2 w-[300px]'/> */}
-        <button className="p-4 my-4 rounded text-white font-semibold w-full bg-red-700">
+        <p className="text-red-500 font-semibold text-lg py-2 ">{errorMsg}</p>
+        <button className="p-4 my-4 rounded text-white font-semibold w-full bg-red-700" onClick={onSignInHandler}>
           {toggleSignIn ? "Sign In" : "Sign Up"}
         </button>
         <div className="text-[#959595] flex justify-between ">

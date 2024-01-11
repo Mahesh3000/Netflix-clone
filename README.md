@@ -17,4 +17,4 @@ You may also see any lint errors in the console.
 # Features
     --> Login / Sign Up Page
     --> redirect to Browser Page if the user not loggedIn
-    
+    --> Form Validation

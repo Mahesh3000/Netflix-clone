@@ -1,13 +1,64 @@
-import React from 'react'
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { auth } from "../firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
+import { NETFLIX_LOGO_URL } from "../utils/constants";
 
 const Header = () => {
-  return (
-    <div className='z-10 absolute py-4 px-8 bg-gradient-to-b from-black'>
-        <img
-        className='w-44'
-         src="https://cdn.cookielaw.org/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png" alt="" />
-    </div>
-  )
-}
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((store) => store.user);
 
-export default Header
+  useEffect(() => {
+   const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const { uid, displayName, email } = user;
+        dispatch(addUser({
+          uid,displayName,email
+        }))
+
+        navigate("/browse");
+      } else {
+        // User is signed out
+        // ...
+        navigate("/login");
+      }
+
+    });
+
+    return ()=> unsubscribe();
+  }, []);
+
+  const onLogOutHandler = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        console.log("LogOut Successful");
+      })
+      .catch((error) => {
+        // An error happened.
+      });
+  };
+  return (
+    <div className="w-full z-10 absolute py-4 px-8 bg-gradient-to-b from-black flex justify-between ">
+      <div>
+        <img
+          className=" w-[12rem]"
+          src={NETFLIX_LOGO_URL}
+          alt="NETFLIX LOGO"
+        />
+      </div>
+      <div>
+        <span className="text-white cursor-pointer" onClick={onLogOutHandler}>
+          {user?.email}
+          LogOut
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export default Header;
