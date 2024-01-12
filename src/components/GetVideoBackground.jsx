@@ -2,14 +2,18 @@
 import {useSelector } from 'react-redux';
 import useMovieTrailer from "../hooks/useMovieTrailer";
 
-const GetVideoBackground = () => {
+const GetVideoBackground = (movieId) => {
   
-    useMovieTrailer();
-    const trailer = useSelector((store) => store.movies?.trailerVideo);
+  useMovieTrailer(movieId.movieId);
+ 
+  const trailer = useSelector((store) => store.movies?.trailerVideo);
+  
+  // Hardcoding trailer src = "4GPvYMKtrtI"
+  // src={"https://www.youtube.com/embed/"+trailer?.key+"?autoplay=1&mute=1&loop=1"}
   return (
-    <div>
+    <div className='w-full'>
       <iframe
-      className='w-full aspect-video'
+      className='w-screen aspect-video'
         src={"https://www.youtube.com/embed/"+trailer?.key+"?autoplay=1&mute=1&loop=1"}
         title="YouTube video player"
         frameBorder="0"
@@ -17,17 +21,10 @@ const GetVideoBackground = () => {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
       ></iframe>
-      {/* <video src={`https://www.youtube.com/watch?v=` + { trailer }} /> */}
     </div>
   );
 };
 
 export default GetVideoBackground;
 
-// const options = {
-//     method: 'GET',
-//     headers: {
-//       accept: 'application/json',
-//       Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhNzVhZTExNDJlMDZkOGQzZDI0MTg4YThkOWQ0ZDlkOCIsInN1YiI6IjY1OWY1MTI4MzY3OWExMDEyOGFiYjZlZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.a4BU_PDCkfJi2u84YuPwxIpPcPEpsJ9m-nKmeL-Hh9A'
-//     }
-//   };
+
