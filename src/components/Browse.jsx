@@ -5,13 +5,14 @@ import MainContainer from "./MainContainer";
 import SecondaryContainer from "./SecondaryContainer";
 import usePopularMovies from "../hooks/usePopularMovies";
 import useUpComingMovies from "../hooks/useUpComingMovies";
+import { useSelector} from 'react-redux';
 
 const Browse = () => {
 
  useNowPlayingMovies();
  usePopularMovies();
  useUpComingMovies();
-//  useTVShows();
+ 
   return (
     <div>
       <Header />

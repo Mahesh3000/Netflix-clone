@@ -19,6 +19,9 @@ const Login = () => {
   const [errorMsg, setErroMsg] = useState(false);
 
   const toggleSignUp = () => {
+    email.current.value = "";
+    password.current.value = null;
+    setErroMsg(false);
     setToggleSignIn(!toggleSignIn);
   };
 
@@ -54,9 +57,11 @@ const Login = () => {
           navigate("/browse");
         })
         .catch((error) => {
+          
           const errorCode = error.code;
           const errorMessage = error.message;
-          // ..
+          setErroMsg(errorMessage)
+          
         });
     else {
       signInWithEmailAndPassword(
@@ -80,6 +85,8 @@ const Login = () => {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          setErroMsg(errorMessage)
+          
         });
     }
   };
@@ -88,11 +95,13 @@ const Login = () => {
     <div>
       <Header />
       <div className="absolute ">
-        <img src={NETFLIX_BODY_URL} alt="NETFLIX BACKGROUND" />
+        <img src={NETFLIX_BODY_URL} alt="NETFLIX BACKGROUND" className="h-screen w-screen object-cover" />
       </div>
       <form
         action=""
-        className="bg-[black]  w-4/12  absolute  right-0 left-0 mx-auto pb-16 pl-16 pr-16 pt-12   my-36 flex flex-col justify-center content-center bg-opacity-80"
+        className="bg-[black] w-full absolute right-0 left-0 mx-auto pb-6 px-16 
+         pt-8 my-36 flex flex-col justify-center content-center bg-opacity-80  
+         md:pt-12 md:w-4/12 md:pb-16"
       >
         <h2 className="text-3xl text-[white] font-semibold just py-4">
           {toggleSignIn ? "Sign In" : "Sign Up"}
@@ -101,22 +110,22 @@ const Login = () => {
           <input
             type="text"
             placeholder="Full Name"
-            className="p-4 mx-auto my-4  w-full rounded bg-[#585858] text-white text-xl  font-semibold"
+            className="p-4 mx-auto my-4 outline-none w-full rounded bg-[#585858] text-white text-xl  font-semibold"
           />
         ) : (
           ""
         )}
         <input
           type="email"
-          placeholder="Email or Phone Number"
+          placeholder="Email "
           ref={email}
-          className="p-4 mx-auto my-4  w-full rounded bg-[#585858] border-none text-xl text-white  font-semibold"
+          className="p-4 mx-auto my-4  w-full outline-none rounded bg-[#585858] border-none text-xl text-white  font-semibold"
         />
         <input
           type="password"
           placeholder="Password"
           ref={password}
-          className="p-4 mx-auto my-4 w-full rounded bg-[#585858] border-none text-xl text-white"
+          className="p-4 mx-auto my-4 w-full outline-none rounded bg-[#585858] border-none text-xl text-white"
         />
         {/* <input type="password"  placeholder='Confirm Password' className='p-2 m-2 w-[300px]'/> */}
         <p className="text-red-500 font-semibold text-lg py-2 ">{errorMsg}</p>

@@ -14,7 +14,7 @@ const MainContainer = () => {
   const { original_title, overview, poster_path, id } = mainMovie;
 
   return (
-    <div>
+    <div className="">
       <VideoTitle title={original_title} overview={overview} poster_path = {poster_path}/>
       {/* <VideoTitle
         title={trailer?.name}

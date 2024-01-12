@@ -7,32 +7,22 @@ import { useDispatch } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
 import { NETFLIX_LOGO_URL } from "../utils/constants";
 import LogOutURL from "../../src/logOutLogo.png";
-import { useLocation } from 'react-router-dom';
+import lang from "./languageConstants.js";
+
 import { searchText } from "../utils/moviesSlice";
+import FindingMovies from "./FindingMovies";
+import LangSelection from "./LangSelection";
+import { setLang } from "../utils/configSlice.js";
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const appLang = useSelector((store) => store.appConfig.currentApplLang);
+
   const user = useSelector((store) => store.user);
   const [isVisible, setVisible] = useState(true);
-  const [search, setSearch] = useState("");
-
   
-  const navList = [
-    "Home",
-    "TV Shows",
-    // "Movies",
-    // "New & Popular",
-    // "Browse by Languages",
-  ];
-
-  const onSearchHandler = (e) =>{
-    
-    setSearch(e);
-    dispatch(searchText(e))
-  }
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -50,6 +40,7 @@ const Header = () => {
         // ...
         dispatch(removeUser());
         navigate("/login");
+        dispatch(setLang("en"))
       }
     });
 
@@ -66,38 +57,38 @@ const Header = () => {
       });
   };
   return (
-    <div className=" px-6 py-2 bg-gradient-to-b from-black z-20 w-full flex flex-col md:flex-row justify-between absolute  ">
-
-      <div className="flex gap-12">
+    <div className=" px-1 py-3 bg-gradient-to-b from-black z-20 w-full flex md:flex-row justify-between absolute  
+                    md:px-6 md:py-2 ">
+      <div className=" gap-3 flex md:gap-12">
         <img
-          className="w-[10rem] max-lg:w-[12rem]"
+          className="w-[7rem] md:w-[10rem] "
           src={NETFLIX_LOGO_URL}
           alt="NETFLIX LOGO"
         />
-        <ul className="flex gap-6 self-center">
-          {navList.map((list) => (
-            <Link to={list} key={list} className={"z-20 text-lg text-white flex cursor-pointer "}>{list}</Link>
+        {user && (
+        <ul className="hidden md:flex gap-6 self-center ">
+          {lang[appLang].home.map((list) => (
+            <Link
+              to={list}
+              key={list}
+              className={"z-20 text-lg text-white flex cursor-pointer "}
+            >
+              {list}
+            </Link>
           ))}
-        </ul>
+        </ul>)}
       </div>
       {user && (
         <div className="flex self-center gap-40">
-          <span className="self-center">
-            
-            <input
-              type="text"
-              value={search}
-              onInput={(e) => onSearchHandler(e.target.value)}
-              className="w-60 h-9 px-2 rounded border-none font-semibold text-xl focus:outline-none"
-              placeholder="Search a movie"
-            />
+          <span className="hidden  md:block self-center">
+            <LangSelection />
+            <FindingMovies />
           </span>
 
-          <span className="text-white cursor-pointer flex">
-
+          <span className="text-white cursor-pointer flex  md:relative   md:mt-0">
             <img
               src={LogOutURL}
-              className="w-10"
+              className="w-10 flex self-end"
               alt="LogOut"
               onClick={() => setVisible(!isVisible)}
             />
@@ -107,16 +98,12 @@ const Header = () => {
               className={
                 isVisible
                   ? "hidden"
-                  : "text-md  absolute -ml-9 mt-[2.60rem] p-1  bg-[#d9232e]  rounded px-3  opacity-70 "
+                  : "text-md  absolute inline-block text-nowrap right-0 -ml-12 mt-[2.60rem] p-1  bg-[#d9232e]  rounded px-3  opacity-70 "
               }
             >
-              <button className="py-1 space-x -3 flex ">
-                {/* <p> LoggedIn: </p> */}
-                {/* <p className="uppercase">{user?.email}</p> */}
-              </button>
-              <button className="mb-1" onClick={onLogOutHandler}>
+              <button className=" mb-1" onClick={onLogOutHandler}>
                 {" "}
-                LogOut
+                {lang[appLang].log_out}
               </button>
             </span>
           </span>

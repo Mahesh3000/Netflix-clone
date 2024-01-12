@@ -12,3 +12,14 @@ export const API_OPTIONS = {
   }
 };
 
+export const SUPPORTED_LANG = [
+  { identifier:"en",
+    name:"english"
+  },
+  { identifier:"telugu",
+    name:"telugu"
+  },
+  { identifier:"hindi",
+    name:"hindi"
+  },
+];
