@@ -1,5 +1,3 @@
-import React from 'react'
-
 export const validate = (email,password) => {
     
     const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);

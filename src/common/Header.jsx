@@ -8,8 +8,6 @@ import { addUser, removeUser } from "../utils/userSlice";
 import { NETFLIX_LOGO_URL } from "../utils/constants";
 import LogOutURL from "../../src/logOutLogo.png";
 import lang from "./languageConstants.js";
-
-import { searchText } from "../utils/moviesSlice";
 import FindingMovies from "./FindingMovies";
 import LangSelection from "./LangSelection";
 import { setLang } from "../utils/configSlice.js";
@@ -88,7 +86,7 @@ const Header = () => {
           <span className="text-white cursor-pointer flex  md:relative   md:mt-0">
             <img
               src={LogOutURL}
-              className="w-10 flex self-end"
+              className="w-6 md:w-10 flex self-end"
               alt="LogOut"
               onClick={() => setVisible(!isVisible)}
             />

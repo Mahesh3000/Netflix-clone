@@ -2,7 +2,6 @@ import React from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import Login from '../components/Login';
 import Browse from '../components/Browse';
-import Body from '../components/Body';
 
 const Routes = () => {
     return createBrowserRouter([

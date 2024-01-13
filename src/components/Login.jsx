@@ -57,8 +57,6 @@ const Login = () => {
           navigate("/browse");
         })
         .catch((error) => {
-          
-          const errorCode = error.code;
           const errorMessage = error.message;
           setErroMsg(errorMessage)
           
@@ -83,7 +81,6 @@ const Login = () => {
           // ...
         })
         .catch((error) => {
-          const errorCode = error.code;
           const errorMessage = error.message;
           setErroMsg(errorMessage)
           
