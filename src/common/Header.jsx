@@ -98,7 +98,7 @@ const Header = () => {
               className={
                 isVisible
                   ? "hidden"
-                  : "text-md  absolute inline-block text-nowrap right-0 -ml-12 mt-[2.60rem] p-1  bg-[#d9232e]  rounded px-3  opacity-70 "
+                  : "text-md absolute inline-block text-nowrap right-0 -ml-12 mt-[2.60rem] p-1  bg-[#d9232e]  rounded px-3  opacity-70 "
               }
             >
               <button className=" mb-1" onClick={onLogOutHandler}>

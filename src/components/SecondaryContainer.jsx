@@ -18,7 +18,7 @@ const SecondaryContainer = () => {
   return (
    
     nowPlayingMovies && (<div className='bg-black '>
-      <div className='mt-[200px]  md:-mt-60 relative z-20 '>
+      <div className='  md:-mt-60 relative z-20 '>
       {!movieSearchedOrNot ? <>
       <MovieList title={lang[appLang].nowPlaying} movies={nowPlayingMovies}/>
       <MovieList title={lang[appLang].trending} movies={popularMovies}/>

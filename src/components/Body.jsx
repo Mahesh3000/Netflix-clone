@@ -9,7 +9,6 @@ const Body = () => {
     {
       path: "/",
       element: <Login />,
-
       errorElement: <ErrorComponent />,
     },
     {
