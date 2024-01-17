@@ -6,20 +6,20 @@ import Browse from '../components/Browse';
 const Routes = () => {
     return createBrowserRouter([
         {
-            path:"/",
-            element: <Login/>
+            path: "/",
+            element: <Login />
         },
         {
-            path:"/browse",
-            element: <Browse/>
+            path: "/browse",
+            element: <Browse />
         },
         {
-            path:"/login",
-            element: <Login/>
+            path: "/login",
+            element: <Login />
         }
     ]);
-    
+
     // return routes;
-} 
-    
+}
+
 export default Routes
